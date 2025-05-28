@@ -1,0 +1,620 @@
+/* Base styles and variables */
+:root {
+  /* Light theme (default) */
+  --bg-primary: #FDF5E6;
+  --bg-secondary: #F3EFE0;
+  --text-primary: #3E2723;
+  --text-secondary: #6D4C41;
+  --accent-primary: #D35400;
+  --accent-secondary: #A93226;
+  --border-color: #5D4037;
+  --highlight: #FFD700;
+  --button-bg: #D35400;
+  --button-text: #FFF8DC;
+  --dither-pattern: url('../images/dither-light.png');
+  --header-text: #ECF0F1;
+  
+  /* UI dimensions */
+  --border-width: 2px;
+  --shadow-offset: 3px;
+  --button-press-offset: 2px;
+}
+
+/* Dark theme */
+[data-theme="dark"] {
+  --bg-primary: #1A2A3A;
+  --bg-secondary: #0F1A2A;
+  --text-primary: #ECF0F1;
+  --text-secondary: #BDC3C7;
+  --accent-primary: #8E44AD;
+  --accent-secondary: #3498DB;
+  --border-color: #5D6D7E;
+  --highlight: #F1C40F;
+  --button-bg: #8E44AD;
+  --button-text: #ECF0F1;
+  --dither-pattern: url('../images/dither-dark.png');
+  --header-text: #ECF0F1;
+}
+
+/* Global Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  image-rendering: pixelated;
+}
+
+/* Hide horizontal scrollbars globally */
+html, body {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 10px;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  background-image: var(--dither-pattern);
+  background-repeat: repeat;
+  width: 350px;
+  height: 500px;
+  overflow-y: auto;
+  overflow-x: hidden; /* Hide horizontal scrollbar */
+}
+
+/* Container */
+.container {
+  max-width: 350px;
+  height: 500px;
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden; /* Hide horizontal scrollbar */
+}
+
+/* Custom scrollbar styling for vertical scrollbars only */
+::-webkit-scrollbar {
+  width: 8px; /* Vertical scrollbar width */
+  height: 0; /* Hide horizontal scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--bg-secondary);
+  border: var(--border-width) solid var(--border-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--accent-primary);
+  border: var(--border-width) solid var(--border-color);
+}
+
+/* Hide horizontal scrollbars in all elements */
+* {
+  scrollbar-width: thin; /* For Firefox - thin vertical scrollbars */
+  scrollbar-color: var(--accent-primary) var(--bg-secondary); /* For Firefox - customizes color */
+}
+
+/* Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+  padding: 12px 12px 15px 12px;
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background-color: var(--bg-primary);
+  background-image: var(--dither-pattern);
+  border-bottom: var(--border-width) solid var(--border-color);
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+h1 {
+  font-size: 16px;
+  color: var(--header-text);
+  text-shadow: var(--shadow-offset) var(--shadow-offset) 0 rgba(0,0,0,0.3);
+  font-weight: bold;
+}
+
+/* Timer Display */
+.timer-display {
+  background-color: var(--bg-secondary);
+  border: var(--border-width) solid var(--border-color);
+  padding: 20px;
+  margin: 12px 12px 10px 12px;
+  text-align: center;
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0 rgba(0,0,0,0.5);
+}
+
+/* Flash animation for timer completion */
+@keyframes flash-alarm {
+  0%, 100% { 
+    background-color: var(--bg-secondary); 
+  }
+  25%, 75% { 
+    background-color: var(--accent-primary); 
+  }
+  50% { 
+    background-color: var(--highlight); 
+  }
+}
+
+.flash-animation {
+  animation: flash-alarm 0.5s ease-in-out 3;
+}
+
+#timer {
+  font-size: 32px;
+  color: var(--accent-primary);
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+  letter-spacing: 2px;
+}
+
+/* Session Status Indicator */
+#session-status {
+  font-size: 14px;
+  font-weight: bold;
+  padding: 6px 12px;
+  border: var(--border-width) solid var(--border-color);
+  display: inline-block;
+  margin-top: 10px;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
+}
+
+#session-status.focus-mode {
+  background-color: var(--accent-primary);
+  color: #FFFFFF;
+}
+
+#session-status.break-mode {
+  background-color: #27AE60;
+  color: #FFFFFF;
+}
+
+.session-type {
+  text-align: center;
+  margin: 0 12px 10px 12px;
+}
+
+#session-label {
+  font-size: 12px;
+  color: var(--text-primary);
+  background-color: var(--bg-secondary);
+  padding: 5px 10px;
+  border: var(--border-width) solid var(--border-color);
+  display: inline-block;
+  font-weight: bold;
+}
+
+/* Controls */
+.controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 0 12px 16px 12px;
+}
+
+.control-btn {
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  border: var(--border-width) solid var(--border-color);
+  padding: 8px;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 10px;
+  cursor: pointer;
+  transition: transform 0.1s ease-in-out;
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0 rgba(0,0,0,0.5);
+}
+
+.control-btn:active {
+  transform: translate(var(--button-press-offset), var(--button-press-offset));
+  box-shadow: 0 0 0 rgba(0,0,0,0.5);
+}
+
+/* Presets */
+.presets {
+  margin: 0 12px 16px 12px;
+}
+
+.presets h3 {
+  font-size: 12px;
+  margin-bottom: 8px;
+  text-align: center;
+  color: #FFFFFF;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+}
+
+.preset-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.preset-btn {
+  background-color: var(--bg-secondary);
+  border: var(--border-width) solid var(--border-color);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 8px;
+  cursor: pointer;
+  color: var(--text-primary);
+  transition: transform 0.1s ease-in-out;
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0 rgba(0,0,0,0.5);
+}
+
+.preset-btn:active {
+  transform: translate(var(--button-press-offset), var(--button-press-offset));
+  box-shadow: 0 0 0 rgba(0,0,0,0.5);
+}
+
+.preset-btn.active {
+  background-color: var(--accent-primary);
+  color: var(--button-text);
+}
+
+.preset-icon {
+  width: 24px;
+  height: 24px;
+  margin-bottom: 5px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Theme toggle */
+.theme-toggle {
+  position: relative;
+  display: inline-block;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--bg-secondary);
+  border: var(--border-width) solid var(--border-color);
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 12px;
+  width: 12px;
+  left: 2px;
+  bottom: 2px;
+  background-color: var(--accent-primary);
+  transition: .4s;
+}
+
+input:checked + .slider:before {
+  transform: translateX(20px);
+}
+
+/* Stats section */
+.stats-section {
+  margin: 10px 12px 10px 12px;
+}
+
+#stats-toggle {
+  width: 100%;
+  background-color: var(--bg-secondary);
+  border: var(--border-width) solid var(--border-color);
+  color: var(--text-primary);
+  font-family: 'Press Start 2P', cursive;
+  font-size: 10px;
+  padding: 8px;
+  cursor: pointer;
+  margin-bottom: 8px;
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0 rgba(0,0,0,0.5);
+  font-weight: bold;
+}
+
+#stats-toggle:active {
+  transform: translate(var(--button-press-offset), var(--button-press-offset));
+  box-shadow: 0 0 0 rgba(0,0,0,0.5);
+}
+
+#stats-panel {
+  border: var(--border-width) solid var(--border-color);
+  padding: 10px;
+  background-color: var(--bg-secondary);
+  margin-top: 8px;
+  font-size: 8px;
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0 rgba(0,0,0,0.5);
+}
+
+/* Stats row */
+.stats-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  color: var(--text-primary);
+}
+
+/* Daily Goal Section */
+.daily-goal-section {
+  margin: 15px 12px 15px 12px;
+  border: var(--border-width) solid var(--border-color);
+  padding: 12px;
+  background-color: var(--bg-secondary);
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0 rgba(0,0,0,0.5);
+}
+
+.daily-goal-section h3 {
+  font-size: 12px;
+  margin-bottom: 10px;
+  text-align: center;
+  color: var(--accent-secondary);
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.1);
+}
+
+.goal-input {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.goal-input input {
+  width: 100px;
+  min-width: 100px;
+}
+
+.goal-input button {
+  padding: 4px 8px;
+  font-size: 8px;
+}
+
+.progress-bar {
+  margin-top: 10px;
+  height: 16px;
+  background-color: var(--bg-primary);
+  border: var(--border-width) solid var(--border-color);
+  overflow: hidden;
+}
+
+#progress-fill {
+  height: 100%;
+  width: 0%; /* Will be updated via JS */
+  background-color: var(--accent-primary);
+  transition: width 0.3s ease-in-out;
+}
+
+/* Progress text */
+.progress-text {
+  margin-top: 5px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 8px;
+  color: var(--text-primary);
+  font-weight: bold;
+}
+
+/* Settings button and modal */
+#settings-btn {
+  width: 30px;
+  height: 30px;
+  border: var(--border-width) solid var(--border-color);
+  background-color: var(--bg-secondary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0 rgba(0,0,0,0.5);
+}
+
+#settings-btn:active {
+  transform: translate(var(--button-press-offset), var(--button-press-offset));
+  box-shadow: 0 0 0 rgba(0,0,0,0.5);
+}
+
+.settings-icon {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+}
+
+.settings-icon::before {
+  content: "⚙️";
+  display: block;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 350px;
+  height: 500px;
+  background-color: rgba(0,0,0,0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: var(--bg-primary);
+  border: var(--border-width) solid var(--border-color);
+  width: 300px;
+  max-width: 95%;
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0 rgba(0,0,0,0.5);
+}
+
+.modal-header {
+  background-color: var(--accent-primary);
+  color: var(--button-text);
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h3 {
+  font-size: 12px;
+}
+
+.close {
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.modal-body {
+  padding: 15px;
+  font-size: 8px;
+}
+
+.settings-group {
+  margin-bottom: 15px;
+}
+
+/* Settings rows */
+.setting-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  color: var(--text-primary);
+}
+
+.settings-group h4 {
+  margin-bottom: 10px;
+  color: var(--accent-secondary);
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.1);
+}
+
+input[type="number"] {
+  width: 50px;
+  background-color: var(--bg-secondary);
+  border: var(--border-width) solid var(--border-color);
+  color: var(--text-primary);
+  font-family: 'Press Start 2P', cursive;
+  font-size: 8px;
+  padding: 5px;
+}
+
+/* Time input with minutes and seconds */
+.time-input {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.time-input input[type="number"] {
+  width: 55px;
+  text-align: center;
+}
+
+.pixel-btn {
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  border: var(--border-width) solid var(--border-color);
+  padding: 8px;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 8px;
+  cursor: pointer;
+  transition: transform 0.1s ease-in-out;
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0 rgba(0,0,0,0.5);
+}
+
+.pixel-btn:active {
+  transform: translate(var(--button-press-offset), var(--button-press-offset));
+  box-shadow: 0 0 0 rgba(0,0,0,0.5);
+}
+
+/* Utility classes */
+.hidden {
+  display: none;
+}
+
+/* Scroll padding */
+.scroll-padding {
+  height: 20px;
+  width: 100%;
+}
+
+/* Preset Icons Specific Styles */
+.pomodoro-icon {
+  background-image: url('../images/pomodoro-icon.png');
+}
+
+.fifty-ten-icon {
+  background-image: url('../images/fifty-ten-icon.png');
+}
+
+.ninety-twenty-icon {
+  background-image: url('../images/ninety-twenty-icon.png');
+}
+
+.custom-icon {
+  background-image: url('../images/custom-icon.png');
+}
+
+/* Volume Slider Styles */
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#volume-slider {
+  width: 120px;
+  height: 20px;
+  -webkit-appearance: none;
+  background-color: var(--bg-secondary);
+  border: var(--border-width) solid var(--border-color);
+  outline: none;
+}
+
+#volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 20px;
+  background-color: var(--accent-primary);
+  border: var(--border-width) solid var(--border-color);
+  cursor: pointer;
+}
+
+#volume-slider::-moz-range-thumb {
+  width: 16px;
+  height: 20px;
+  background-color: var(--accent-primary);
+  border: var(--border-width) solid var(--border-color);
+  cursor: pointer;
+}
+
+#volume-value {
+  font-size: 8px;
+  color: var(--text-primary);
+  min-width: 40px;
+} 

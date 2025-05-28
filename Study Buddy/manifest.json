@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "16-Bit Timer",
+  "version": "1.0",
+  "description": "A retro 16-bit themed study timer with customizable sessions",
+  "icons": {
+    "16": "images/icon-16.png",
+    "48": "images/icon-48.png",
+    "128": "images/icon-128.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "images/icon-16.png",
+      "48": "images/icon-48.png",
+      "128": "images/icon-128.png"
+    }
+  },
+  "permissions": ["storage", "notifications", "alarms", "tabs", "windows"],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  }
+} 
